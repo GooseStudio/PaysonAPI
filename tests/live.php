@@ -10,7 +10,9 @@ use CyoniteSystems\PaysonAPI\PaymentRequest;
 use CyoniteSystems\PaysonAPI\PaymentResponse;
 use CyoniteSystems\PaysonAPI\PaymentSender;
 error_reporting(E_ALL);
-ini_set("display_errors", 1);
+ini_set("log_errors", 1);
+ini_set("error_log", dirname(__FILE__). '/error.log');
+
 /**
  * Card number: 4581 1111 1111 1112
  * Expiration Date:Any
