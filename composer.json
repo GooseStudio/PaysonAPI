@@ -1,0 +1,23 @@
+{
+  "name": "cyonite/PaysonAPI",
+  "description": "Package for easier PaysonAPI integration",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andreas Nurbo",
+      "email": "andreas@cyonitesystems.com"
+    }
+  ],
+  "require-dev": {
+    "phpspec/phpspec": "2.0.x-dev",
+    "mockery/mockery": ">=0.7.2"
+  },
+  "require": {
+    "nategood/httpful": "*"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {"psr-0": {"": "src"}}
+}

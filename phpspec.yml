@@ -1,0 +1,6 @@
+suites:
+  PaysonAPI:
+    namespace: \CyoniteSystems\PaysonAPI\
+    spec_prefic: spec
+    src_path: src/
+    spec_path: tests/
