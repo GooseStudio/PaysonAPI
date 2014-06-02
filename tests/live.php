@@ -1,4 +1,5 @@
 <?php
+require '../vendor/autoload.php';
 use CyoniteSystems\PaysonAPI\CurrencyCode;
 use CyoniteSystems\PaysonAPI\FeesPayer;
 use CyoniteSystems\PaysonAPI\FundingConstraint;
@@ -8,8 +9,8 @@ use CyoniteSystems\PaysonAPI\PaymentReceiver;
 use CyoniteSystems\PaysonAPI\PaymentRequest;
 use CyoniteSystems\PaysonAPI\PaymentResponse;
 use CyoniteSystems\PaysonAPI\PaymentSender;
-
-include '../vendor/autoload.php';
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 /**
  * Card number: 4581 1111 1111 1112
  * Expiration Date:Any
@@ -37,6 +38,7 @@ switch($_SERVER['QUERY_STRING']) {
         break;
     default:
         $siteUrl = curPageURL();
+
         $receiver = new PaymentReceiver('testagent-1@payson.se', 125.00*1.25);
         $sender = new PaymentSender('test-shopper@payson.se', 'John', 'Doe');
         $paymentRequest = new PaymentRequest(
@@ -53,7 +55,7 @@ switch($_SERVER['QUERY_STRING']) {
         /**
          * @var PaymentResponse $response
          */
-        $response = $this->pay($paymentRequest);
+        $response = $api->pay($paymentRequest);
         if ($response->wasSuccessfull()) {
             file_put_contents(dirname(__FILE__). '/payson.log', "**** Payment ****\n", FILE_APPEND);
             $forward = $api->makeForwardUrl($response);
