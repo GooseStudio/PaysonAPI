@@ -4,7 +4,7 @@ namespace CyoniteSystems\PaysonAPI;
 
 use Httpful\Exception\ConnectionErrorException;
 use Httpful\Request;
-
+use Httpful\Mime;
 class HttpfulTransport implements IHttp {
     /**
      * @param $uri
@@ -15,11 +15,11 @@ class HttpfulTransport implements IHttp {
      */
     function post($uri, $data, $headers) {
         try {
-            $response = Request::post($uri, $data)->addHeaders($headers)->send();
+            $response = Request::post($uri, $data, MIME::FORM)->addHeaders($headers)->withoutStrictSsl()->send();
         } catch(ConnectionErrorException $ex) {
             throw new PaysonHttpException(sprintf('Post request to %s failed',$uri),$ex->getCode(), $ex);
         }
-        return $response;
+        return $response->body;
     }
 
     /**

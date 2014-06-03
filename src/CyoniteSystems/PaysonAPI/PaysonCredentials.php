@@ -38,6 +38,7 @@ class PaysonCredentials {
         return [
             'PAYSON-SECURITY-USERID'=>$this->getUserId(),
             'PAYSON-SECURITY-PASSWORD'=>$this->getUserKey(),
+            'PAYSON-APPLICATION-ID' => ''
         ];
     }
 }

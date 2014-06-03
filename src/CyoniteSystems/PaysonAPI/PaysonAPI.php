@@ -40,7 +40,7 @@ class PaysonAPI {
      * @return PaymentResponse
      */
     public function pay(PaymentRequest $payment_request) {
-        $payload = $this->toString($payment_request->getPayload());
+        $payload = $payment_request->getPayload();
         $response = $this->makeRequest(self::PAYSON_API_PAY_ACTION, $payload);
         $data = $this->toArray($response);
         $payment_response = new PaymentResponse($data);
@@ -51,12 +51,10 @@ class PaysonAPI {
      * @param string $action
      * @param $payload
      * @return mixed
-    @internal param $url
      */
     private function makeRequest($action, $payload) {
         $paymentUrl = $this->makeUrl($action);
         $headers = $this->credentials->getHeaders();
-        $headers['Content-Type'] = 'application/x-www-form-urlencoded';
         return $this->transport->post($paymentUrl, $payload, $headers);
     }
 
@@ -71,16 +69,6 @@ class PaysonAPI {
             $data[array_shift($tuple)] = ($value = array_shift($tuple))?urldecode($value):null;
         }
         return $data;
-    }
-
-    private function toString($array) {
-        $entries = array();
-
-        foreach ($array as $key => $value) {
-            $entries[$key] = sprintf("%s=%s", $key, urlencode($value));
-        }
-
-        return join("&", $entries);
     }
 
     function makeUrl($action) {
