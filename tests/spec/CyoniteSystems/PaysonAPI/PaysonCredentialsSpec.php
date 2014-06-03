@@ -4,7 +4,6 @@ namespace spec\CyoniteSystems\PaysonAPI;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use CyoniteSystems\PaysonAPI\PaysonCredentials;
 class PaysonCredentialsSpec extends ObjectBehavior {
     function it_is_initializable() {
         $this->shouldHaveType('\CyoniteSystems\PaysonAPI\PaysonCredentials');
@@ -26,6 +25,7 @@ class PaysonCredentialsSpec extends ObjectBehavior {
         $this->getHeaders()->shouldEqual([
             'PAYSON-SECURITY-USERID'=>'userid',
             'PAYSON-SECURITY-PASSWORD'=>'userkey',
+            'PAYSON-APPLICATION-ID'=>'',
         ]);
     }
 }

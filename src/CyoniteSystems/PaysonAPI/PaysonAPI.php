@@ -82,7 +82,8 @@ class PaysonAPI {
     }
 
     /**
-     * @param array $request
+     * @param string $raw_request php:input
+     * @param array $request $_REQUEST
      * @return ValidationResponse
      */
     public function validate($raw_request,$request) {

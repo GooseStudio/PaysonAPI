@@ -7,9 +7,10 @@ use Httpful\Request;
 use Httpful\Mime;
 class HttpfulTransport implements IHttp {
     /**
-     * @param $uri
-     * @param $data
-     * @param $headers
+     * @param string $uri
+     * @param string $data
+     * @param array $headers
+     * @param bool $parseData
      * @throws PaysonHttpException
      * @return array
      */
@@ -29,21 +30,5 @@ class HttpfulTransport implements IHttp {
             throw new PaysonHttpException(sprintf('Post request to %s failed',$uri),$ex->getCode(), $ex);
         }
         return $parseData?$response->body:$response->raw_body;
-    }
-
-    /**
-     * @param $uri
-     * @param $data
-     * @param $headers
-     * @throws PaysonHttpException
-     * @return array
-     */
-    function get($uri, $data, $headers) {
-        try {
-            $response = Request::get($uri, $data)->addHeaders($headers)->send();
-        } catch(ConnectionErrorException $ex) {
-            throw new PaysonHttpException(sprintf('Post request to %s failed',$uri),$ex->getCode(), $ex);
-        }
-        return $response;
     }
 }
