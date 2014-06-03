@@ -74,9 +74,8 @@ class PaymentRequest {
             $output = array_merge($output, $this->receivers[$i]->toArray($i));
         }
 
-        $orders=[];
         for($i=0;$i<sizeof($this->order); $i++) {
-            $orders=array_merge($orders, $this->order[$i]->toArray($i));
+            $output=array_merge($output, $this->order[$i]->toArray($i));
         }
 
         if (isset($this->fundingConstraints)) {
