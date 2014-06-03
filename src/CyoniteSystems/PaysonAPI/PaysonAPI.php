@@ -42,8 +42,7 @@ class PaysonAPI {
     public function pay(PaymentRequest $payment_request) {
         $payload = $payment_request->getPayload();
         $response = $this->makeRequest(self::PAYSON_API_PAY_ACTION, $payload);
-        $data = $this->toArray($response);
-        $payment_response = new PaymentResponse($data);
+        $payment_response = new PaymentResponse($response);
         return $payment_response;
     }
 
@@ -60,15 +59,6 @@ class PaysonAPI {
 
     public function setTransport(IHttp $transport) {
         $this->transport = $transport;
-    }
-    private function toArray($string) {
-        $entries = explode('&', $string);
-        $data = [];
-        foreach($entries as $entry) {
-            $tuple = explode('=', $entry);
-            $data[array_shift($tuple)] = ($value = array_shift($tuple))?urldecode($value):null;
-        }
-        return $data;
     }
 
     function makeUrl($action) {

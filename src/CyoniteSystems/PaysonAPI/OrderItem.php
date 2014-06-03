@@ -75,16 +75,16 @@ class OrderItem {
         return $this->sku;
     }
 
-    public function toString($n) {
-        $order = "orderItemList.orderItem ($n).description=". urldecode($this->description);
+    public function toArray($n) {
+        $order["orderItemList.orderItem($n).description"]=$this->description;
         if ($this->sku)
-            $order .= "&orderItemList.orderItem ($n).sku=" . $this->sku;
+            $order["orderItemList.orderItem($n).sku"] = $this->sku;
         if ($this->quantity)
-            $order .= "&orderItemList.orderItem ($n).quantity=" . urlencode($this->quantity);
+            $order["orderItemList.orderItem($n).quantity"]=$this->quantity;
         if ($this->unitPrice)
-            $order .= "&orderItemList.orderItem ($n).unitPrice=" . urlencode($this->unitPrice);
+            $order["orderItemList.orderItem($n).unitPrice"]=$this->unitPrice;
         if ($this->taxPercentage)
-            $order .= "&orderItemList.orderItem ($n).taxPercentage=" . urlencode($this->taxPercentage);
+            $order["orderItemList.orderItem($n).taxPercentage"]=$this->taxPercentage;
         return $order;
     }
 }

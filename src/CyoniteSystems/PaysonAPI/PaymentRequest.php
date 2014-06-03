@@ -76,7 +76,7 @@ class PaymentRequest {
 
         $orders=[];
         for($i=0;$i<sizeof($this->order); $i++) {
-            $orders[] = $this->order[$i]->toString($i);
+            $orders=array_merge($orders, $this->order[$i]->toArray($i));
         }
 
         if (isset($this->fundingConstraints)) {
