@@ -50,7 +50,8 @@ switch($string) {
             $sender
             ,$siteUrl.'?page=return'
             ,$siteUrl.'?page=cancel'
-            ,$siteUrl.'?page=notify');
+            ,$siteUrl.'?page=notify'
+            ,'Test site payment, thanks for buying our stuff');
         $paymentRequest->addReceiver($receiver);
         $paymentRequest->addOrderItem(new OrderItem("Test product", 125.00 , 1, 0.25, 'kalle'));
         $paymentRequest->setLocaleCode(LocaleCode::SWEDISH);
