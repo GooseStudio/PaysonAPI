@@ -13,13 +13,22 @@ class HttpfulTransport implements IHttp {
      * @throws PaysonHttpException
      * @return array
      */
-    function post($uri, $data, $headers) {
+    function post($uri, $data, $headers, $parseData = true) {
         try {
-            $response = Request::post($uri, $data, MIME::FORM)->addHeaders($headers)->withoutStrictSsl()->send();
+            $response = Request::post($uri, $data, MIME::FORM)
+                        ->addHeaders($headers)
+                        ->serializePayload($parseData?Request::SERIALIZE_PAYLOAD_SMART : Request::SERIALIZE_PAYLOAD_NEVER)
+                        ->withoutStrictSsl()
+                        ->parseWith(function ($string) {$entries = explode('&', $string);$data = [];
+        foreach($entries as $entry) {
+            $tuple = explode('=', $entry);
+            $data[array_shift($tuple)] = ($value = array_shift($tuple))?urldecode($value):null;
+        }
+            return $data;})->send();
         } catch(ConnectionErrorException $ex) {
             throw new PaysonHttpException(sprintf('Post request to %s failed',$uri),$ex->getCode(), $ex);
         }
-        return $response->body;
+        return $parseData?$response->body:$response->raw_body;
     }
 
     /**

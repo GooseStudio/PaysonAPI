@@ -9,6 +9,7 @@ class PaymentRequest {
     protected $fees_payer;
     protected $receivers = [];
     protected $showReceiptPage = true;
+    protected $memo = '';
     /**
      * @var PaymentSender
      */
@@ -18,11 +19,12 @@ class PaymentRequest {
     private $ipn_notification_url;
     private $order = [];
 
-    public function __construct(PaymentSender $sender, $return_url, $cancel_url, $ipn_notification_url) {
+    public function __construct(PaymentSender $sender, $return_url, $cancel_url, $ipn_notification_url, $memo = 'none') {
         $this->sender = $sender;
         $this->return_url = $return_url;
         $this->cancel_url = $cancel_url;
         $this->ipn_notification_url = $ipn_notification_url;
+	$this->memo = $memo;
     }
 
     /**
@@ -93,6 +95,8 @@ class PaymentRequest {
         if (isset($this->feesPayer)) {
             $output["feesPayer"] = $this->feesPayer;
         }
+
+	$output["memo"] = $this->memo;
 /*
         if (isset($this->guaranteeOffered)) {
             $output["guaranteeOffered"] = GuaranteeOffered::ConstantToString($this->guaranteeOffered);
@@ -184,8 +188,7 @@ class PaymentRequest {
     /**
      * @param boolean $showReceiptPage
      */
-    public function setShowReceiptPage($showReceiptPage)
-    {
+    public function setShowReceiptPage($showReceiptPage) {
         $this->showReceiptPage = $showReceiptPage;
     }
 }

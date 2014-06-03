@@ -54,7 +54,7 @@ class PaysonAPI {
     private function makeRequest($action, $payload) {
         $paymentUrl = $this->makeUrl($action);
         $headers = $this->credentials->getHeaders();
-        return $this->transport->post($paymentUrl, $payload, $headers);
+        return $this->transport->post($paymentUrl, $payload, $headers, $action !== self::PAYSON_API_VALIDATE_ACTION);
     }
 
     public function setTransport(IHttp $transport) {
@@ -62,7 +62,7 @@ class PaysonAPI {
     }
 
     function makeUrl($action) {
-        return 'https://'.($this->isTesting()?'test-':'').PaysonAPI::PAYSON_API_ENDPOINT . "/".PaysonAPI::PAYSON_API_VERSION. "/$action";
+        return 'https://'.($this->isTesting()?'test-':'').PaysonAPI::PAYSON_API_ENDPOINT . "/".PaysonAPI::PAYSON_API_VERSION. "/$action/";
     }
 
     /**
@@ -78,17 +78,16 @@ class PaysonAPI {
      * @return string
      */
     public function makeForwardUrl(PaymentResponse $payment_response) {
-        return sprintf('https://'.PaysonAPI::PAYSON_WWW_PAY_FORWARD_URL.PaysonAPI::PAYSON_WWW_HOST, $payment_response->getToken());
+        return sprintf('https://'.($this->isTesting()?'test-':''). PaysonAPI::PAYSON_WWW_HOST . PaysonAPI::PAYSON_WWW_PAY_FORWARD_URL, $payment_response->getToken());
     }
 
     /**
      * @param array $request
      * @return ValidationResponse
      */
-    public function validate($request) {
-        $response = $this->makeRequest(self::PAYSON_API_VALIDATE_ACTION, $request);
-        $paymentData = $this->toArray($request);
-        return new ValidationResponse(new PaymentDetails($paymentData), $response);
+    public function validate($raw_request,$request) {
+        $response = $this->makeRequest(self::PAYSON_API_VALIDATE_ACTION, $raw_request);
+        return new ValidationResponse(new PaymentDetails($request), $response);
     }
 
     /**

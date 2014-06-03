@@ -21,8 +21,10 @@ $http = new \Httpful\Httpful();
 $credentials = new \CyoniteSystems\PaysonAPI\PaysonCredentials(4, '2acab30d-fe50-426f-90d7-8c60a7eb31d4');
 $api = new \CyoniteSystems\PaysonAPI\PaysonAPI($credentials, true);
 $api->setTransport(new \CyoniteSystems\PaysonAPI\HttpfulTransport());
-
-switch($_SERVER['QUERY_STRING']) {
+$string = explode('&',$_SERVER['QUERY_STRING']);
+if(sizeof($string)>0)
+   $string=$string[0];
+switch($string) {
     case 'page=return':
         echo 'payment has been done';
         break;
@@ -30,10 +32,12 @@ switch($_SERVER['QUERY_STRING']) {
         echo 'Payment was cancelled';
         break;
     case 'page=notify':
-        $response = $api->validate($_REQUEST);
+        $request = file_get_contents("php://input");
+        $response = $api->validate($request, $_REQUEST);
         $state = $response->isVerified() ? "VERIFIED\n" : "NOT VERIFIED\n";
         file_put_contents(dirname(__FILE__). '/payson.log', "**** IPN ****\n", FILE_APPEND);
         file_put_contents(dirname(__FILE__). '/payson.log', $state, FILE_APPEND);
+        file_put_contents(dirname(__FILE__). '/payson.log', $request, FILE_APPEND);
         file_put_contents(dirname(__FILE__). '/payson.log', print_r($response, true), FILE_APPEND);
         file_put_contents(dirname(__FILE__). '/payson.log', print_r($_REQUEST, true), FILE_APPEND);
         break;

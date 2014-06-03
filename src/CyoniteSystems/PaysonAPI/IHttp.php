@@ -12,7 +12,7 @@ interface IHttp {
      * @param array $headers
      * @return string|array
      */
-    function post($uri, $data, $headers);
+    function post($uri, $data, $headers, $parseData = true);
     /**
      * @param string $uri
      * @param string $data
