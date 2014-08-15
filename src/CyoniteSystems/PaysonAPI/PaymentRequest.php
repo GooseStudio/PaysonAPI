@@ -18,13 +18,15 @@ class PaymentRequest {
     private $cancel_url;
     private $ipn_notification_url;
     private $order = [];
+    private $custom;
+    private $tracking_id;
 
     public function __construct(PaymentSender $sender, $return_url, $cancel_url, $ipn_notification_url, $memo = 'none') {
         $this->sender = $sender;
         $this->return_url = $return_url;
         $this->cancel_url = $cancel_url;
         $this->ipn_notification_url = $ipn_notification_url;
-	$this->memo = $memo;
+        $this->memo = $memo;
     }
 
     /**
@@ -88,19 +90,19 @@ class PaymentRequest {
             $output["custom"] = $this->custom;
         }
 
-        if (isset($this->trackingId)) {
-            $output["trackingId"] = $this->trackingId;
+        if (isset($this->tracking_id)) {
+            $output["trackingId"] = $this->tracking_id;
         }
 
         if (isset($this->feesPayer)) {
             $output["feesPayer"] = $this->feesPayer;
         }
 
-	$output["memo"] = $this->memo;
-/*
-        if (isset($this->guaranteeOffered)) {
-            $output["guaranteeOffered"] = GuaranteeOffered::ConstantToString($this->guaranteeOffered);
-        }*/
+        $output["memo"] = $this->memo;
+        /*
+                if (isset($this->guaranteeOffered)) {
+                    $output["guaranteeOffered"] = GuaranteeOffered::ConstantToString($this->guaranteeOffered);
+                }*/
 
 
         if (isset($this->showReceiptPage)) {
@@ -190,5 +192,47 @@ class PaymentRequest {
      */
     public function setShowReceiptPage($showReceiptPage) {
         $this->showReceiptPage = $showReceiptPage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustom () {
+        return $this->custom;
+    }
+
+    /**
+     * @param mixed $custom
+     */
+    public function setCustom ($custom) {
+        $this->custom = $custom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemo () {
+        return $this->memo;
+    }
+
+    /**
+     * @param string $memo
+     */
+    public function setMemo ($memo) {
+        $this->memo = $memo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrackingId () {
+        return $this->tracking_id;
+    }
+
+    /**
+     * @param mixed $tracking_id
+     */
+    public function setTrackingId ($tracking_id) {
+        $this->tracking_id = $tracking_id;
     }
 }
