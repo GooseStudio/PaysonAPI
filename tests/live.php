@@ -1,5 +1,4 @@
 <?php
-require '../vendor/autoload.php';
 use CyoniteSystems\PaysonAPI\CurrencyCode;
 use CyoniteSystems\PaysonAPI\FeesPayer;
 use CyoniteSystems\PaysonAPI\FundingConstraint;
@@ -12,6 +11,7 @@ use CyoniteSystems\PaysonAPI\PaymentSender;
 error_reporting(E_ALL);
 ini_set("log_errors", 1);
 ini_set("error_log", dirname(__FILE__). '/error.log');
+require 'HttpfulTransport.php';
 /**
  * Card number: 4581 1111 1111 1112
  * Expiration Date:Any
@@ -20,7 +20,7 @@ ini_set("error_log", dirname(__FILE__). '/error.log');
 $http = new \Httpful\Httpful();
 $credentials = new \CyoniteSystems\PaysonAPI\PaysonCredentials(4, '2acab30d-fe50-426f-90d7-8c60a7eb31d4');
 $api = new \CyoniteSystems\PaysonAPI\PaysonAPI($credentials, true);
-$api->setTransport(new \CyoniteSystems\PaysonAPI\HttpfulTransport());
+$api->setTransport(new HttpfulTransport());
 $string = explode('&',$_SERVER['QUERY_STRING']);
 if(sizeof($string)>0)
    $string=$string[0];
@@ -50,7 +50,8 @@ switch($string) {
             $sender
             ,$siteUrl.'?page=return'
             ,$siteUrl.'?page=cancel'
-            ,$siteUrl.'?page=notify');
+            ,$siteUrl.'?page=notify'
+            ,'Test site payment, thanks for buying our stuff');
         $paymentRequest->addReceiver($receiver);
         $paymentRequest->addOrderItem(new OrderItem("Test product", 125.00 , 1, 0.25, 'kalle'));
         $paymentRequest->setLocaleCode(LocaleCode::SWEDISH);
